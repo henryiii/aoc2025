@@ -8,13 +8,19 @@ export function readInput(day: number | string): string {
   return readFileSync(file, "utf8").replace(/\r?\n$/, "");
 }
 
-export function solver_a(day: number | string, fn: (input: string) => any): void {
+export function solver_a(
+  day: number | string,
+  fn: (input: string) => any,
+): void {
   const input = readInput(day);
   const result = fn(input);
   console.log(`Day ${day} - Part A: ${result}`);
 }
 
-export function solver_b(day: number | string, fn: (input: string) => any): void {
+export function solver_b(
+  day: number | string,
+  fn: (input: string) => any,
+): void {
   const input = readInput(day);
   const result = fn(input);
   console.log(`Day ${day} - Part B: ${result}`);

@@ -8,7 +8,7 @@ const input = `
 `.trim();
 
 describe("day00 examples", () => {
-  it("example input", () => {
+  it("First example", () => {
     expect(solve_a(input)).toBe(6);
   });
 });

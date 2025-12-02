@@ -1,6 +1,3 @@
-import { solver_a } from "./utils.js";
-
-
 type Instruction = 
   | { kind: "L"; value: number }
   | { kind: "R"; value: number };
@@ -16,11 +13,8 @@ export function solve_a(input: string): number {
   let dial = 50;
   let count = 0;
   for (const line of lines) {
-    if (line.kind === "L") {
-      dial = (dial - line.value + 100) % 100;
-    } else {
-      dial = (dial + line.value) % 100;
-    }
+    const movement = line.kind === "R" ? line.value : -line.value;
+    dial = (dial + movement + 100) % 100;
     if (dial == 0) {
       count += 1;
     }
@@ -28,5 +22,20 @@ export function solve_a(input: string): number {
   return count;
 }
 
-// Print to stdout
-solver_a(1, solve_a);
+export function solve_b(input: string): number {
+  const lines = input.split("\n").map(parseLine);
+  let dial = 50;
+  let count = 0;
+  for (const line of lines) {
+    const movement = line.kind === "R" ? line.value : -line.value;
+    const new_dial = dial + movement;
+    
+    if (movement > 0) {
+      count += Math.floor(new_dial / 100) - Math.floor(dial / 100);
+    } else {
+      count += Math.floor((dial - 1) / 100) - Math.floor((new_dial - 1) / 100);
+    }
+    dial = ((new_dial % 100) + 100) % 100;
+  }
+  return count;
+}

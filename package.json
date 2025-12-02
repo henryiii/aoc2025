@@ -4,7 +4,8 @@
   "description": "This is a solution repository for Advent of Code 2025.",
   "type": "module",
   "scripts": {
-    "start": "tsx src/run.ts"
+    "start": "tsx src/run.ts",
+    "test": "vitest"
   },
   "author": "Henry Schreiner",
   "license": "MIT",
@@ -12,7 +13,8 @@
   "devDependencies": {
     "@types/node": "^24.10.1",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.15"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

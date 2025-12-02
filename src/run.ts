@@ -1,11 +1,7 @@
 // This is needed to make linters happy, tsx supports top-level await
 export {};
 
-const day = process.argv[2] || '00';
+const day = process.argv[2] || '0';
+const padded_day = String(day).padStart(2, "0");
 
-if (!day.match(/^\d{2}$/)) {
-  console.error('Please provide a valid day in the format "dd"');
-  process.exit(1);
-}
-
-await import(`./day${day}.ts`);
+await import(`./day${padded_day}.ts`);

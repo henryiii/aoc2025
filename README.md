@@ -26,4 +26,12 @@ I also needed to run `pnpm add -D @types/node`, to teach typescript that it is
 targeting node; this fixed vscode's tooling to recognize `process` as an
 object.
 
-You can run a day with `pnpm start 00`, for example.
+You can run a day with `pnpm start 0`, for example.
+
+Tests are using vitest, and you can run them with:
+
+```bash
+pnpm test run
+```
+
+Leaving off the `run` will put it into watch mode.

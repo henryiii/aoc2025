@@ -1,0 +1,22 @@
+{
+  "name": "aoc2025",
+  "version": "1.0.0",
+  "description": "This is a solution repository for Advent of Code 2025.",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/run.ts"
+  },
+  "author": "Henry Schreiner",
+  "license": "MIT",
+  "packageManager": "pnpm@10.24.0",
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}

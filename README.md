@@ -35,3 +35,10 @@ pnpm test run
 ```
 
 Leaving off the `run` will put it into watch mode.
+
+For linting and formatting, I installed prettier and eslint. You can run them:
+
+```bash
+pnpm format
+pnpm lint
+```

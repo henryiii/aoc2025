@@ -8,18 +8,18 @@ export function readInput(day: number | string): string {
   return readFileSync(file, "utf8").replace(/\r?\n$/, "");
 }
 
-export function solver_a(
+export function solver_a<T>(
   day: number | string,
-  fn: (input: string) => any,
+  fn: (input: string) => T,
 ): void {
   const input = readInput(day);
   const result = fn(input);
   console.log(`Day ${day} - Part A: ${result}`);
 }
 
-export function solver_b(
+export function solver_b<T>(
   day: number | string,
-  fn: (input: string) => any,
+  fn: (input: string) => T,
 ): void {
   const input = readInput(day);
   const result = fn(input);

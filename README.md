@@ -13,18 +13,18 @@ brew install pnpm node
 ```
 
 I started with a minimal setup (see git history). I generated the `package.json`
-with `pnpm init`. I installed and added typescript and tsx with `pnpm install
---save-dev typescript tsx`. You'll need to run:
+with `pnpm init`. I installed and added typescript and tsx with
+`pnpm install --save-dev typescript tsx`. You'll need to run:
 
 ```bash
 pnpm install
 ```
 
-For vscode, I did need to change the package manager in the "npm" section to "pnpm" from "auto".
+For vscode, I did need to change the package manager in the "npm" section to
+"pnpm" from "auto".
 
 I also needed to run `pnpm add -D @types/node`, to teach typescript that it is
-targeting node; this fixed vscode's tooling to recognize `process` as an
-object.
+targeting node; this fixed vscode's tooling to recognize `process` as an object.
 
 You can run a day with:
 
@@ -47,4 +47,5 @@ pnpm format
 pnpm lint
 ```
 
-I used ChatGPT to help write the code, with lots of guidance.
+I used ChatGPT to help write some portions of the code, with lots of guidance.
+This helped me not have to look up things like how to write `log10`.

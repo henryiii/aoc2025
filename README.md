@@ -42,3 +42,5 @@ For linting and formatting, I installed prettier and eslint. You can run them:
 pnpm format
 pnpm lint
 ```
+
+I used ChatGPT to help write the code, with lots of guidance.

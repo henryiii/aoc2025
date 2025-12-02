@@ -4,7 +4,7 @@
   "description": "This is a solution repository for Advent of Code 2025.",
   "type": "module",
   "scripts": {
-    "start": "tsx src/run.ts",
+    "day": "tsx src/run.ts",
     "test": "vitest",
     "format": "prettier --write .",
     "lint": "eslint . --ext .ts"

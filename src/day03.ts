@@ -1,21 +1,3 @@
-function highest(arr: number[]): number {
-  let max = -Infinity;
-  for (let i = 0; i < arr.length; i++) {
-    for (let j = i + 1; j < arr.length; j++) {
-      const sum = arr[i] * 10 + arr[j];
-      if (sum > max) {
-        max = sum;
-      }
-    }
-  }
-  return max;
-}
-
-export function solve_a(input: string): number {
-  const lines = input.split("\n").map((line) => [...line].map(Number));
-  return lines.reduce((a, b) => a + highest(b), 0);
-}
-
 function pick(arr: number[], start: number, k: number): number {
   if (k === 0) return 0;
 
@@ -32,9 +14,14 @@ function pick(arr: number[], start: number, k: number): number {
   throw new Error("unreachable");
 }
 
+function parse(input: string): number[][] {
+  return input.split("\n").map((line) => [...line].map(Number));
+}
+
+export function solve_a(input: string): number {
+  return parse(input).reduce((a, b) => a + pick(b, 0, 2), 0);
+}
+
 export function solve_b(input: string): number {
-  const lines = input.split("\n").map((line) => [...line].map(Number));
-  return lines.reduce((sum, arr) => {
-    return sum + pick(arr, 0, 12);
-  }, 0);
+  return parse(input).reduce((sum, arr) => sum + pick(arr, 0, 12), 0);
 }

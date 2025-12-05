@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { solve_a } from "../src/day05";
+import { solve_a, solve_b } from "../src/day05";
 
 const input = `
 3-5
@@ -18,5 +18,8 @@ const input = `
 describe("day05 examples", () => {
   it("First example", () => {
     expect(solve_a(input)).toBe(3);
+  });
+  it("Second example", () => {
+    expect(solve_b(input)).toBe(14);
   });
 });

@@ -15,23 +15,17 @@ class Range {
 
 function merge_ranges(ranges: Range[]): Range[] {
   const sorted = [...ranges].sort((a, b) => a.min - b.min);
-
   const merged: Range[] = [];
-  let current = new Range(sorted[0].min, sorted[0].max);
 
-  for (let i = 1; i < sorted.length; i++) {
-    const r = sorted[i];
-
-    if (r.min <= current.max + 1) {
-      // Overlaps or touches — expand current
-      current.max = Math.max(current.max, r.max);
+  for (const range of sorted) {
+    const last = merged[merged.length - 1];
+    if (last && range.min <= last.max + 1) {
+      last.max = Math.max(last.max, range.max);
     } else {
-      // Disjoint — push current and start new
-      merged.push(current);
-      current = new Range(r.min, r.max);
+      merged.push(new Range(range.min, range.max));
     }
   }
-  merged.push(current);
+
   return merged;
 }
 
@@ -43,14 +37,11 @@ export function solve_a(input: string): number {
   });
   const ingredients = ingredients_str.split("\n").map(Number);
 
-  return ingredients.reduce((sum, ingredient) => {
-    for (const range of ranges) {
-      if (range.contains(ingredient)) {
-        return sum + 1;
-      }
-    }
-    return sum;
-  }, 0);
+  return ingredients.reduce(
+    (sum, ingredient) =>
+      sum + (ranges.some((range) => range.contains(ingredient)) ? 1 : 0),
+    0,
+  );
 }
 
 export function solve_b(input: string): number {

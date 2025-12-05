@@ -19,19 +19,14 @@ export function solve_a(input: string): number {
 export function solve_b(input: string): number {
   const grid = Grid.fromRows(input.split("\n"), (ch) => ch === "@");
   let removed = 0;
-  while (true) {
+  let new_removed = 0;
+  do {
     const removal = can_remove(grid);
-    const new_removed = removal.reduce(
-      (acc, value) => acc + (value ? 1 : 0),
-      0,
-    );
-    if (new_removed === 0) break;
+    new_removed = removal.reduce((acc, value) => acc + (value ? 1 : 0), 0);
     removed += new_removed;
     removal.forEach((value, coords) => {
-      if (value) {
-        grid.set(coords[0], coords[1], false);
-      }
+      if (value) grid.set(coords[0], coords[1], false);
     });
-  }
+  } while (new_removed > 0);
   return removed;
 }

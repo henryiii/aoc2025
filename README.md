@@ -49,3 +49,10 @@ pnpm lint
 
 I used ChatGPT to help write some portions of the code, with lots of guidance.
 This helped me not have to look up things like how to write `log10`.
+
+To start up a REPL, type:
+
+```console
+$ pnpm tsx
+> const { Grid } = await import("./src/grid.ts");
+```

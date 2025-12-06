@@ -13,6 +13,6 @@ describe("day06 examples", () => {
     expect(solve_a(input)).toBe(4277556);
   });
   it("Second example", () => {
-    expect(solve_b(input)).toBe(6);
+    expect(solve_b(input)).toBe(3263827);
   });
 });

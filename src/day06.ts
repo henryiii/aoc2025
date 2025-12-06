@@ -27,5 +27,37 @@ export function solve_a(input: string): number {
 }
 
 export function solve_b(input: string): number {
-  return 6;
+  const grid = Grid.fromRows(input.split("\n"));
+  let total = 0;
+  let subtotal = 0;
+  let op: string | undefined = undefined;
+  grid.columns.forEach((col, ci) => {
+    if (op === undefined) {
+      op = col.pop();
+      console.log(`Operation for column ${ci}: ${op}`);
+    }
+    const nonzero = col.filter((d) => d !== undefined && d != " ").length;
+    if (nonzero > 0) {
+      const num = parseInt(col.join("").trim(), 10);
+      switch (op) {
+        case "+":
+          subtotal += num;
+          break;
+        case "*":
+          if (subtotal === 0) {
+            subtotal = 1;
+          }
+          subtotal *= num;
+          break;
+        default:
+          throw new Error(`Unknown operation: ${op}`);
+      }
+    }
+    if (nonzero === 0 || ci === grid.width - 1) {
+      total += subtotal;
+      subtotal = 0;
+      op = undefined;
+    }
+  });
+  return total;
 }

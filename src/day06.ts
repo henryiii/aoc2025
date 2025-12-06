@@ -1,5 +1,4 @@
 import { Grid } from "./grid.ts";
-
 function zip<T, U>(a: T[], b: U[]): [T, U][] {
   return a
     .map((val, i) => [val, b[i]] as [T, U])
@@ -10,8 +9,8 @@ export function solve_a(input: string): number {
   const lines = input.split("\n").map((line) => line.trim().split(/\s+/));
   const ops = lines.pop() || [];
   const grid = Grid.from(lines, Number);
-  let total = 0;
-  zip(grid.columns, ops).forEach(([col, op]) => {
+
+  return zip(grid.columns, ops).reduce((total, [col, op]) => {
     let result: number;
     switch (op) {
       case "+":
@@ -23,9 +22,8 @@ export function solve_a(input: string): number {
       default:
         throw new Error(`Unknown operation: ${op}`);
     }
-    total += result;
-  });
-  return total;
+    return total + result;
+  }, 0);
 }
 
 export function solve_b(input: string): number {

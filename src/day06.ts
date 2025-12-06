@@ -1,4 +1,7 @@
 import { Grid } from "./grid.ts";
+
+type Op = "+" | "*";
+
 function zip<T, U>(a: T[], b: U[]): [T, U][] {
   return a
     .map((val, i) => [val, b[i]] as [T, U])
@@ -26,38 +29,58 @@ export function solve_a(input: string): number {
   }, 0);
 }
 
+function splitOnEmpty(arr: string[][]): [Op, Grid<string>][] {
+  const groups: [Op, Grid<string>][] = [];
+  let current: string[][] = [];
+
+  let op: Op | undefined = undefined;
+  for (const sub of arr) {
+    if (sub.every((x) => x === undefined || x.trim() === "")) {
+      if (current.length > 0) {
+        if (op === undefined) {
+          throw new Error("No operation found for group");
+        }
+        groups.push([op, Grid.from(current, String)]);
+        current = [];
+      }
+    } else {
+      const last = sub.pop();
+      if (last !== undefined && last.trim() !== "") {
+        op = last[0] as Op;
+      }
+      current.push(sub);
+    }
+  }
+
+  if (current.length > 0) {
+    if (op === undefined) {
+      throw new Error("No operation found for group");
+    }
+    groups.push([op, Grid.from(current, String)]);
+  }
+
+  return groups;
+}
+
 export function solve_b(input: string): number {
   const grid = Grid.fromRows(input.split("\n"));
-  let total = 0;
-  let subtotal = 0;
-  let op: string | undefined = undefined;
-  grid.columns.forEach((col, ci) => {
-    if (op === undefined) {
-      op = col.pop();
-      console.log(`Operation for column ${ci}: ${op}`);
-    }
-    const nonzero = col.filter((d) => d !== undefined && d != " ").length;
-    if (nonzero > 0) {
-      const num = parseInt(col.join("").trim(), 10);
-      switch (op) {
-        case "+":
-          subtotal += num;
-          break;
-        case "*":
-          if (subtotal === 0) {
-            subtotal = 1;
+  return splitOnEmpty(grid.columns).reduce((total, [op, g]) => {
+    return (
+      total +
+      g.rows.reduce(
+        (colTotal, col) => {
+          const num = parseInt(col.join(""), 10);
+          switch (op) {
+            case "+":
+              return colTotal + num;
+            case "*":
+              return colTotal * num;
+            default:
+              throw new Error(`Unknown operation: ${op}`);
           }
-          subtotal *= num;
-          break;
-        default:
-          throw new Error(`Unknown operation: ${op}`);
-      }
-    }
-    if (nonzero === 0 || ci === grid.width - 1) {
-      total += subtotal;
-      subtotal = 0;
-      op = undefined;
-    }
-  });
-  return total;
+        },
+        op === "+" ? 0 : 1,
+      )
+    );
+  }, 0);
 }

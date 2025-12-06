@@ -40,19 +40,19 @@ export class Grid<T> {
     );
   }
 
-  get width() {
+  get width(): number {
     return this.data.length ? this.data[0].length : 0;
   }
 
-  get height() {
+  get height(): number {
     return this.data.length;
   }
 
-  get rows() {
+  get rows(): T[][] {
     return this.data;
   }
 
-  get columns() {
+  get columns(): T[][] {
     return Array.from({ length: this.width }, (_, ci) =>
       this.rows.map((row) => row.at(ci) as T),
     );

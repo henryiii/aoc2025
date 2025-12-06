@@ -14,48 +14,39 @@ export function solve_a(input: string): number {
   const grid = Grid.from(lines, Number);
 
   return zip(grid.columns, ops).reduce((total, [col, op]) => {
-    let result: number;
     switch (op) {
       case "+":
-        result = col.reduce((a, b) => a + b, 0);
-        break;
+        return total + col.reduce((a, b) => a + b, 0);
       case "*":
-        result = col.reduce((a, b) => a * b, 1);
-        break;
+        return total + col.reduce((a, b) => a * b, 1);
       default:
         throw new Error(`Unknown operation: ${op}`);
     }
-    return total + result;
   }, 0);
 }
 
 function splitOnEmpty(arr: string[][]): [Op, Grid<string>][] {
   const groups: [Op, Grid<string>][] = [];
   let current: string[][] = [];
+  let op: Op | undefined;
 
-  let op: Op | undefined = undefined;
   for (const sub of arr) {
-    if (sub.every((x) => x === undefined || x.trim() === "")) {
-      if (current.length > 0) {
-        if (op === undefined) {
-          throw new Error("No operation found for group");
-        }
+    if (sub.every((x) => !x || !x.trim())) {
+      if (current.length > 0 && op) {
         groups.push([op, Grid.from(current, String)]);
         current = [];
+        op = undefined;
       }
     } else {
-      const last = sub.pop();
-      if (last !== undefined && last.trim() !== "") {
+      const last = sub.pop()?.trim();
+      if (last) {
         op = last[0] as Op;
       }
       current.push(sub);
     }
   }
 
-  if (current.length > 0) {
-    if (op === undefined) {
-      throw new Error("No operation found for group");
-    }
+  if (current.length > 0 && op) {
     groups.push([op, Grid.from(current, String)]);
   }
 

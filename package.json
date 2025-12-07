@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "day": "tsx src/run.ts",
+    "newday": "tsx src/newday.ts",
     "test": "vitest",
     "format": "prettier --write .",
     "lint": "eslint . --ext .ts"

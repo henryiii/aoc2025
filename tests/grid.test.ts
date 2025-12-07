@@ -92,4 +92,16 @@ describe("Grid", () => {
     const neighborsValues = neighborsCoords.map(([r, c]) => grid.get(r, c));
     expect(neighborsValues).toEqual([0, 1, 0, 2, 3, 0, 4, 0]);
   });
+
+  it("findIter", () => {
+    const grid = new Grid<number>(3, 3, 0);
+    grid.set(0, 0, 1);
+    grid.set(1, 1, 2);
+    grid.set(2, 2, 1);
+    const foundCoords = Array.from(grid.findIter((value) => value === 1));
+    expect(foundCoords).toEqual([
+      [0, 0],
+      [2, 2],
+    ]);
+  });
 });

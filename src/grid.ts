@@ -1,8 +1,9 @@
 // Based on https://kittygiraudel.com/2024/01/01/2d-grid-helpers
 
-type Coords = [number, number];
+export type Coords = [number, number];
 type Point = `${number},${number}`;
 const toCoords = (input: Point) => input.split(",").map(Number) as Coords;
+export const toPoint = (coords: Coords): Point => `${coords[0]},${coords[1]}`;
 
 type Mapper<I, O> = (value: I, coords: Coords) => O;
 const identity = <I, O>(value: I) => value as unknown as O;
@@ -109,6 +110,18 @@ export class Grid<T> {
       accumulator = callback(accumulator, value, coords);
     });
     return accumulator;
+  }
+
+  *findIter(
+    predicate: (value: T, coords: Coords) => boolean,
+  ): IterableIterator<Coords> {
+    for (let ri = 0; ri < this.height; ri++) {
+      for (let ci = 0; ci < this.width; ci++) {
+        if (predicate(this.data[ri][ci], [ri, ci])) {
+          yield [ri, ci];
+        }
+      }
+    }
   }
 }
 

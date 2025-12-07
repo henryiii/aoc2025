@@ -3,7 +3,6 @@ import { writeFileSync } from "fs";
 function generateDayTemplate(day: number): void {
   const padDay = String(day).padStart(2, "0");
 
-  const srcPath = `src/day${padDay}.ts`;
   const srcTemplate = `\
 export function solve_a(input: string): number {
     return input.split("\\n").map(Number).reduce((a, b) => a + b, 0);
@@ -14,7 +13,6 @@ export function solve_b(input: string): number {
 }
 `;
 
-  const testPath = `tests/day${padDay}.test.ts`;
   const testTemplate = `\
 import { describe, it, expect } from "vitest";
 import { solve_a, solve_b } from "../src/day${padDay}";
@@ -34,12 +32,18 @@ describe("day${padDay} examples", () => {
 });
 `;
 
+  const srcPath = `src/day${padDay}.ts`;
+  const testPath = `tests/day${padDay}.test.ts`;
+  const inputPath = `inputs/day${padDay}.txt`;
+
   writeFileSync(srcPath, srcTemplate);
   writeFileSync(testPath, testTemplate);
+  writeFileSync(inputPath, "");
 
   console.log(`Generated files for day ${day}:`);
   console.log(` - ${srcPath}`);
   console.log(` - ${testPath}`);
+  console.log(` - ${inputPath}`);
 }
 
 const day = parseInt(process.argv[2]);

@@ -79,5 +79,8 @@ export function solve_b(input: string): number {
     }
   }
 
-  return points[lastPair![0]][0] * points[lastPair![1]][0];
+    if (!lastPair) {
+      throw new Error("No valid pair found");
+    }
+    return points[lastPair[0]][0] * points[lastPair[1]][0];
 }

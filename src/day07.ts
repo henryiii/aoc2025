@@ -1,6 +1,10 @@
 import { Grid, Coords, toPoint } from "./grid.js";
 
-function splits(start: Coords, grid: Grid<string>, visited: Grid<boolean>): void {
+function splits(
+  start: Coords,
+  grid: Grid<string>,
+  visited: Grid<boolean>,
+): void {
   const next: Coords = [start[0] + 1, start[1]];
   const char = grid.at(next);
   if (char === undefined) {
@@ -31,15 +35,18 @@ export function solve_b(input: string): number {
   const start: Coords = grid.findIter((v) => v === "S").next().value;
   const paths = new Grid<number>(grid.width, grid.height, 0);
   paths.set_at(toPoint(start), 1);
-  for (let ri = start[0] + 1; ri < grid.height; ri++) {
+  for (let ri = start[0]; ri < grid.height - 1; ri++) {
     for (let ci = 0; ci < grid.width; ci++) {
+      const current = paths.get(ri, ci) ?? 0;
+      if (current === 0) {
+        continue;
+      }
       const char = grid.get(ri, ci);
       if (char === "^") {
-        const left = ci > 0 ? paths.get(ri - 1, ci - 1) ?? 0 : 0;
-        const right = ci < grid.width - 1 ? paths.get(ri - 1, ci + 1) ?? 0 : 0;
-        paths.set(ri, ci, left + right);
+        paths.set(ri + 1, ci + 1, (paths.get(ri + 1, ci + 1) ?? 0) + current);
+        paths.set(ri + 1, ci - 1, (paths.get(ri + 1, ci - 1) ?? 0) + current);
       } else {
-        paths.set(ri, ci, paths.get(ri - 1, ci) ?? 0);
+        paths.set(ri + 1, ci, (paths.get(ri + 1, ci) ?? 0) + current);
       }
     }
   }

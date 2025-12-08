@@ -10,40 +10,54 @@ function euclideanDistance(x: Coords, y: Coords): number {
   );
 }
 
-// I didn't realize that you always count connections, so re-solved this with a
-// lot of help from CoPilot after looking at the reddit thread. I'm not the only
-// one who thought "nothing happens" meant do nothing!
-export function solve_a(input: string, size = 1000): number {
-  const points = input.split("\n").map((line) => toCoords(line as Point));
+function find(parent: number[], x: number): number {
+  return parent[x] === x ? x : (parent[x] = find(parent, parent[x]));
+}
 
-  // Union-Find structure
-  const parent = Array.from({ length: points.length }, (_, i) => i);
-  const find = (x: number): number =>
-    parent[x] === x ? x : (parent[x] = find(parent[x]));
-  const union = (x: number, y: number) => {
-    const [px, py] = [find(x), find(y)];
-    if (px !== py) parent[py] = px;
-  };
+function union(parent: number[], x: number, y: number): void {
+  const [px, py] = [find(parent, x), find(parent, y)];
+  if (px !== py) parent[py] = px;
+}
 
-  // Build pairs and union by distance
+function computePairs(points: Coords[]): [number, number, number][] {
   const pairs: [number, number, number][] = [];
   for (let i = 0; i < points.length; ++i) {
     for (let j = i + 1; j < points.length; ++j) {
       pairs.push([i, j, euclideanDistance(points[i], points[j])]);
     }
   }
-
   pairs.sort((a, b) => a[2] - b[2]);
+  return pairs;
+}
+
+function componentSizes(
+  parent: number[],
+  points: Coords[],
+): Record<number, number> {
+  return Object.fromEntries(
+    points
+      .map((_, i) => find(parent, i))
+      .reduce((acc, p) => {
+        acc.set(p, (acc.get(p) ?? 0) + 1);
+        return acc;
+      }, new Map()),
+  );
+}
+
+// I didn't realize that you always count connections, so re-solved this with a
+// lot of help from CoPilot after looking at the reddit thread. I'm not the only
+// one who thought "nothing happens" meant do nothing!
+export function solve_a(input: string, size = 1000): number {
+  const points = input.split("\n").map((line) => toCoords(line as Point));
+  const parent = Array.from({ length: points.length }, (_, i) => i);
+
+  // Build pairs and union by distance
+  const pairs = computePairs(points);
   for (let i = 0; i < Math.min(size, pairs.length); ++i) {
-    union(pairs[i][0], pairs[i][1]);
+    union(parent, pairs[i][0], pairs[i][1]);
   }
 
-  // Count component sizes
-  const count: Record<number, number> = {};
-  points.forEach((_, i) => {
-    const p = find(i);
-    count[p] = (count[p] || 0) + 1;
-  });
+  const count = componentSizes(parent, points);
 
   return Object.values(count)
     .sort((a, b) => b - a)
@@ -52,5 +66,18 @@ export function solve_a(input: string, size = 1000): number {
 }
 
 export function solve_b(input: string): number {
-  return 2;
+  const points = input.split("\n").map((line) => toCoords(line as Point));
+  const parent = Array.from({ length: points.length }, (_, i) => i);
+
+  const pairs = computePairs(points);
+  let lastPair: [number, number, number] | null = null;
+
+  for (const pair of pairs) {
+    if (find(parent, pair[0]) !== find(parent, pair[1])) {
+      union(parent, pair[0], pair[1]);
+      lastPair = pair;
+    }
+  }
+
+  return points[lastPair![0]][0] * points[lastPair![1]][0];
 }

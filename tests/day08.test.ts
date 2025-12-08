@@ -29,6 +29,6 @@ describe("day08 examples", () => {
     expect(solve_a(input, 10)).toBe(40);
   });
   it("Second example", () => {
-    expect(solve_b(input)).toBe(2);
+    expect(solve_b(input)).toBe(25272);
   });
 });

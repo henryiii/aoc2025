@@ -61,7 +61,7 @@ The GitHub Actions CI (`.github/workflows/test.yml`) runs on all PRs and main
 branch pushes:
 
 1. Checkout code
-2. Setup pnpm v4 (action-setup)
+2. Setup pnpm (using pnpm/action-setup@v4)
 3. Setup Node.js v20 with pnpm cache
 4. Run `pnpm install`
 5. Run `pnpm test` (runs `vitest` without "run" parameter, but CI detects
@@ -178,9 +178,9 @@ describe("dayXX examples", () => {
 ### Adding a New Day
 
 1. Run `pnpm newday <N>` to generate template files
-2. Edit `inputs/dayN.txt` with puzzle input
-3. Implement `solve_a()` and `solve_b()` in `src/dayNN.ts`
-4. Update tests in `tests/dayNN.test.ts` with examples from puzzle
+2. Edit `inputs/dayN.txt` with puzzle input (where N is padded, e.g., day01.txt)
+3. Implement `solve_a()` and `solve_b()` in `src/dayN.ts` (e.g., day01.ts)
+4. Update tests in `tests/dayN.test.ts` with examples from puzzle
 5. Run `pnpm test run` to verify
 6. Run `pnpm lint` and `pnpm format` before committing
 

@@ -2,7 +2,8 @@
 
 export type Coords = [number, number];
 type Point = `${number},${number}`;
-const toCoords = (input: Point) => input.split(",").map(Number) as Coords;
+export const toCoords = (input: Point) =>
+  input.split(",").map(Number) as Coords;
 export const toPoint = (coords: Coords): Point => `${coords[0]},${coords[1]}`;
 
 type Mapper<I, O> = (value: I, coords: Coords) => O;

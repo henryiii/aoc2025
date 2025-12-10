@@ -10,46 +10,39 @@ class Machine {
   }
 
   static fromString(s: string): Machine {
-    const match = s.match(/\[(.*?)\]/);
-    if (!match) {
-      throw new Error("Invalid target");
-    }
-    const target = match[1].split("").map((c) => c === "#");
+    const target =
+      s
+        .match(/\[(.*?)\]/)?.[1]
+        ?.split("")
+        .map((c) => c === "#") || [];
 
-    const toggleMatches = s.match(/\((.*?)\)/g);
-    if (!toggleMatches) {
-      throw new Error("Invalid toggles");
-    }
-    const toggles = toggleMatches.map((tm) => {
-      const nums = tm.slice(1, -1).split(",").map(Number);
-      return nums;
-    });
+    const toggles = (s.match(/\((.*?)\)/g) || []).map((tm) =>
+      tm.slice(1, -1).split(",").map(Number),
+    );
 
-    const joltMatch = s.match(/\{(.*?)\}/);
-    if (!joltMatch) {
-      throw new Error("Invalid joltages");
-    }
-    const joltages = joltMatch[1].split(",").map(Number);
+    const joltages =
+      s
+        .match(/\{(.*?)\}/)?.[1]
+        ?.split(",")
+        .map(Number) || [];
+
     return new Machine(target, toggles, joltages);
   }
 
   minPresses(): number {
-    // Brute-force all combinations of button presses
     const n = this.toggles.length;
     let min = Infinity;
     for (let mask = 0; mask < 1 << n; mask++) {
       const state = new Array(this.target.length).fill(false);
-      let presses = 0;
       for (let i = 0; i < n; i++) {
         if ((mask & (1 << i)) !== 0) {
           for (const idx of this.toggles[i]) {
             state[idx] = !state[idx];
           }
-          presses++;
         }
       }
       if (state.every((v, i) => v === this.target[i])) {
-        if (presses < min) min = presses;
+        min = Math.min(min, mask.toString(2).split("0").join("").length);
       }
     }
     return min === Infinity ? -1 : min;

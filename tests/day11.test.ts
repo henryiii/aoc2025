@@ -14,11 +14,27 @@ hhh: ccc fff iii
 iii: out
 `.trim();
 
+const input2 = `
+svr: aaa bbb
+aaa: fft
+fft: ccc
+bbb: tty
+tty: ccc
+ccc: ddd eee
+ddd: hub
+hub: fff
+eee: dac
+dac: fff
+fff: ggg hhh
+ggg: out
+hhh: out
+`.trim();
+
 describe("day11 examples", () => {
-    it("First example", () => {
-        expect(solve_a(input)).toBe(5);
-    });
-    it("Second example", () => {
-        expect(solve_b(input)).toBe(0);
-    });
+  it("First example", () => {
+    expect(solve_a(input)).toBe(5);
+  });
+  it("Second example", () => {
+    expect(solve_b(input2)).toBe(2);
+  });
 });

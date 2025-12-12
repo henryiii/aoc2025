@@ -33,7 +33,6 @@
     "proseWrap": "always"
   },
   "dependencies": {
-    "glpk.js": "^4.0.2",
     "javascript-lp-solver": "^0.4.24"
   }
 }

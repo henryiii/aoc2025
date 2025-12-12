@@ -11,7 +11,7 @@ describe("day10 examples", () => {
   it("First example", () => {
     expect(solve_a(input)).toBe(7);
   });
-  it("Second example", () => {
-    expect(solve_b(input)).toBe(2);
+  it("Second example", async () => {
+    expect(await solve_b(input)).toBe(33);
   });
 });

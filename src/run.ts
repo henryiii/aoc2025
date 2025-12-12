@@ -12,5 +12,5 @@ if (typeof mod.solve_a === "function") {
   solver_a(Number(day), mod.solve_a);
 }
 if (typeof mod.solve_b === "function") {
-  solver_b(Number(day), mod.solve_b);
+  await solver_b(Number(day), mod.solve_b);
 }

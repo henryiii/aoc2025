@@ -17,11 +17,11 @@ export function solver_a<T>(
   console.log(`Day ${day} - Part A: ${result}`);
 }
 
-export function solver_b<T>(
+export async function solver_b<T>(
   day: number | string,
-  fn: (input: string) => T,
-): void {
+  fn: (input: string) => Promise<T> | T,
+): Promise<void> {
   const input = readInput(day);
-  const result = fn(input);
+  const result = await fn(input);
   console.log(`Day ${day} - Part B: ${result}`);
 }

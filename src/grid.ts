@@ -124,6 +124,10 @@ export class Grid<T> {
       }
     }
   }
+
+  toString(valueMapper: (value: T) => string = (v) => String(v)): string {
+    return this.data.map((row) => row.map(valueMapper).join(" ")).join("\n");
+  }
 }
 
 export function* neighbors(position: Point | Coords): IterableIterator<Coords> {

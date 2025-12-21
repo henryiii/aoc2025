@@ -4,16 +4,16 @@
 
 This is an **Advent of Code 2025** solutions repository written in
 **TypeScript**. The codebase is small (~1200 lines total) and uses modern
-Node.js tooling with pnpm as the package manager. Each day's puzzle has its own
+bun tooling with bun 1.3.5 as the package manager. Each day's puzzle has its own
 source file (`src/dayXX.ts`) with corresponding test file
 (`tests/dayXX.test.ts`).
 
 **Key Details:**
 
-- Language: TypeScript (ES2022 target, ESNext modules)
-- Package Manager: **pnpm v10.24.0** (required - npm won't work correctly)
-- Runtime: Node.js v20
-- Test Framework: Vitest v4.0.15
+- Language: TypeScript (ESNext target)
+- Package Manager: **bun 1.3.5** (required - npm won't work correctly)
+- Runtime: bun 1.3.5
+- Test Framework: Bun v1.3.5 built-in test runner
 - Linter: ESLint v9 with TypeScript strict rules
 - Formatter: Prettier v3.7.3
 
@@ -24,34 +24,33 @@ source file (`src/dayXX.ts`) with corresponding test file
 ### Initial Setup
 
 ```bash
-# Install pnpm globally if not available (required for this project)
-npm install -g pnpm@10.24.0
+# Install bun globally if not available (required for this project)
+curl -fsSL https://bun.sh/install | bash
 
 # Install dependencies - ALWAYS run this first after cloning
-pnpm install
+bun install
 ```
 
 ### Development Commands
 
 ```bash
 # Run a specific day's solution (requires input file in inputs/dayXX.txt)
-pnpm day <number>         # Example: pnpm day 1
+bun day <number>         # Example: bun day 1
 
 # Create a new day's files (source, test, and empty input)
-pnpm newday <number>      # Example: pnpm newday 11
+bun newday <number>      # Example: bun newday 11
 
 # Run tests (use "run" to avoid watch mode)
-pnpm test run             # Run all tests once
-pnpm test                 # Watch mode (interactive)
+bun test                 # Run all tests once
 
 # Lint code (must pass for CI)
-pnpm lint                 # Check for lint errors
+bun lint                 # Check for lint errors
 
 # Format code (recommended to run before committing)
-pnpm format               # Auto-format all files with Prettier
+bun format               # Auto-format all files with Prettier
 
 # Start a TypeScript REPL for debugging
-pnpm tsx
+bun tsx
 # Then in REPL: const { Grid } = await import("./src/grid.ts");
 ```
 
@@ -61,15 +60,10 @@ The GitHub Actions CI (`.github/workflows/test.yml`) runs on all PRs and main
 branch pushes:
 
 1. Checkout code
-2. Setup pnpm (using pnpm/action-setup@v4)
-3. Setup Node.js v20 with pnpm cache
-4. Run `pnpm install`
-5. Run `pnpm test` (runs `vitest` without "run" parameter, but CI detects
-   non-TTY)
-
-**Note:** There is currently 1 pre-existing test failure in
-`tests/day10.test.ts` (Second example expects 2, gets NaN). This is NOT
-something you need to fix unless working on day10.
+2. Setup bun (using bun.sh/install)
+3. Setup Node.js v20 with bun cache
+4. Run `bun install`
+5. Run `bun test` (runs `bun` built-in test runner)
 
 ## Project Structure
 
@@ -134,13 +128,13 @@ export function solve_b(input: string): number {
 **Test Structure:**
 
 ```typescript
-import { describe, it, expect } from "vitest";
+import { describe, test, expect } from "bun:test";
 import { solve_a, solve_b } from "../src/dayXX";
 
 const input = `...`.trim(); // Inline example input
 
 describe("dayXX examples", () => {
-  it("First example", () => {
+  test("First example", () => {
     expect(solve_a(input)).toBe(expected);
   });
 });
@@ -151,8 +145,8 @@ describe("dayXX examples", () => {
 ### Input Files
 
 - Input files are gitignored (except day00.txt as template)
-- Running `pnpm day X` without `inputs/dayXX.txt` will fail with ENOENT error
-- Use `pnpm newday X` to create the empty input file, then populate it
+- Running `bun day X` without `inputs/dayXX.txt` will fail with ENOENT error
+- Use `bun newday X` to create the empty input file, then populate it
 
 ### Module Resolution
 
@@ -164,8 +158,8 @@ describe("dayXX examples", () => {
 ### TypeScript Configuration
 
 - Strict mode enabled (`"strict": true`)
-- Target: ES2022, Module: ESNext
-- `@types/node` is installed to recognize Node.js globals like `process`
+- Target: ESNext, Module: ESNext
+- `@types/bun` is installed
 
 ### Linting
 
@@ -177,27 +171,27 @@ describe("dayXX examples", () => {
 
 ### Adding a New Day
 
-1. Run `pnpm newday <N>` to generate template files
+1. Run `bun newday <N>` to generate template files
 2. Edit `inputs/dayN.txt` with puzzle input (where N is padded, e.g., day01.txt)
 3. Implement `solve_a()` and `solve_b()` in `src/dayN.ts` (e.g., day01.ts)
 4. Update tests in `tests/dayN.test.ts` with examples from puzzle
-5. Run `pnpm test run` to verify
-6. Run `pnpm lint` and `pnpm format` before committing
+5. Run `bun test` to verify
+6. Run `bun lint` and `bun format` before committing
 
 ### Modifying Existing Code
 
 1. Make targeted changes to specific files
-2. Run `pnpm test run` to ensure tests still pass
-3. Run `pnpm lint` to check for errors
-4. Run `pnpm format` to auto-format
-5. Verify with `pnpm day <N>` if changing solution logic
+2. Run `bun test` to ensure tests still pass
+3. Run `bun lint` to check for errors
+4. Run `bun format` to auto-format
+5. Verify with `bun day <N>` if changing solution logic
 
 ### Testing Utilities (Grid, Utils)
 
 - These have dedicated test files in `tests/`
 - Any changes to `src/grid.ts` or `src/utils.ts` should maintain backward
   compatibility
-- Run full test suite: `pnpm test run`
+- Run full test suite: `bun test`
 
 ## Trust These Instructions
 

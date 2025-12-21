@@ -56,3 +56,16 @@ To start up a REPL, type:
 $ pnpm tsx
 > const { Grid } = await import("./src/grid.ts");
 ```
+
+## Bun reworking
+
+After a suggestion, I switched from `pnpm` to `bun`.
+
+The new install was
+
+```
+brew tap oven-sh/bun
+brew install bun
+```
+
+New commands, replace `pnpm` with `bun run`.

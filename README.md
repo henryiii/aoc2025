@@ -68,4 +68,9 @@ brew tap oven-sh/bun
 brew install bun
 ```
 
-New commands, replace `pnpm` with `bun run`.
+New commands, replace `pnpm` with `bun`.
+
+I installed bun's type definitions with `bun add -d @types/bun`. I added the
+tsconfig from <https://bun.com/docs/typescript>.
+
+I moved to using `bun:test`.

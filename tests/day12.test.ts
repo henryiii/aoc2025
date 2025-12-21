@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, test, expect } from "bun:test";
 import { solve_a } from "../src/day12";
 
 const input = `
@@ -38,7 +38,7 @@ const input = `
 `.trim();
 
 describe("day12 examples", () => {
-  it("First example", () => {
+  test("First example", () => {
     expect(solve_a(input)).toBe(3);
   });
 });

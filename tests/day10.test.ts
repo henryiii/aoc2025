@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, test, expect } from "bun:test";
 import { solve_a, solve_b } from "../src/day10";
 
 const input = `
@@ -8,10 +8,10 @@ const input = `
 `.trim();
 
 describe("day10 examples", () => {
-  it("First example", () => {
+  test("First example", () => {
     expect(solve_a(input)).toBe(7);
   });
-  it("Second example", async () => {
+  test("Second example", async () => {
     expect(await solve_b(input)).toBe(33);
   });
 });

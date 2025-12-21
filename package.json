@@ -6,7 +6,6 @@
   "scripts": {
     "day": "tsx src/run.ts",
     "newday": "tsx src/newday.ts",
-    "test": "vitest",
     "format": "prettier --write .",
     "lint": "eslint . --ext .ts"
   },
@@ -15,14 +14,14 @@
   "packageManager": "bun@1.3.5",
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@types/bun": "^1.3.5",
     "@types/node": "^24.10.1",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.7.3",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.48.1",
-    "vitest": "^4.0.15"
+    "typescript-eslint": "^8.48.1"
   },
   "prettier": {
     "proseWrap": "always"

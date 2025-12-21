@@ -12,17 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          run_install: false
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "pnpm"
+          bun-version: latest
 
       - name: Install with cache
-        run: pnpm install
+        run: bun install
 
       - name: Test
-        run: pnpm test
+        run: bun test

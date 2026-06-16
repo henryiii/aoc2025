@@ -1,6 +1,3 @@
-// This is needed to make linters happy, tsx supports top-level await
-export {};
-
 import { solver_a, solver_b } from "./utils.js";
 
 const day = process.argv[2] || "0";

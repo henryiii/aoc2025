@@ -1,4 +1,7 @@
-import { toCoords, Coords } from "./grid.js";
+import type { Coords } from "./grid.js";
+
+const parseCoords = (line: string): Coords =>
+  line.split(",").map(Number) as Coords;
 
 function area(first_corner: Coords, second_corner: Coords): number {
   return (
@@ -8,7 +11,7 @@ function area(first_corner: Coords, second_corner: Coords): number {
 }
 
 export function solve_a(input: string): number {
-  const corners = input.split("\n").map(toCoords);
+  const corners = input.split("\n").map(parseCoords);
   return corners.reduce(
     (max, corner, i) =>
       Math.max(max, ...corners.slice(i + 1).map((c) => area(corner, c))),
@@ -29,8 +32,8 @@ function inside_path(
   const maxY = Math.max(y1, y2);
 
   for (let i = 0; i < corners.length; i++) {
-    const [xA, yA] = corners[i];
-    const [xB, yB] = corners[(i + 1) % corners.length];
+    const [xA, yA] = corners[i] as Coords;
+    const [xB, yB] = corners[(i + 1) % corners.length] as Coords;
 
     if (
       (xA === xB &&
@@ -49,7 +52,7 @@ function inside_path(
 }
 
 export function solve_b(input: string): number {
-  const corners = input.split("\n").map(toCoords);
+  const corners = input.split("\n").map(parseCoords);
   return corners.reduce(
     (max, corner, i) =>
       Math.max(

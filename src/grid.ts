@@ -27,9 +27,11 @@ export class Grid<T> {
   }
 
   static from<I, O = I>(input: I[][], mapper: Mapper<I, O> = identity) {
-    return new Grid<O>(input[0].length, input.length, ([ri, ci]) =>
-      mapper(input[ri][ci], [ri, ci]),
+    const grid = new Grid<O>(input[0]?.length ?? 0, input.length);
+    input.forEach((row, ri) =>
+      row.forEach((value, ci) => grid.set(ri, ci, mapper(value, [ri, ci]))),
     );
+    return grid;
   }
 
   static fromRows<O = string>(
@@ -43,7 +45,7 @@ export class Grid<T> {
   }
 
   get width(): number {
-    return this.data.length ? this.data[0].length : 0;
+    return this.data[0]?.length ?? 0;
   }
 
   get height(): number {
@@ -61,7 +63,9 @@ export class Grid<T> {
   }
 
   get(ri: number, ci: number): T | undefined {
-    return this.data.at(ri)?.at(ci);
+    // Index, not .at(): negative indices should be out of bounds, not wrap.
+    if (ri < 0 || ci < 0) return undefined;
+    return this.data[ri]?.[ci];
   }
 
   at(position: Point | Coords): T | undefined {
@@ -71,13 +75,14 @@ export class Grid<T> {
   }
 
   set(ri: number, ci: number, value: T): void {
-    if (this.data.at(ri) === undefined) {
+    const row = this.data[ri];
+    if (ri < 0 || row === undefined) {
       throw new Error(`Row index ${ri} out of bounds`);
     }
-    if (this.data[ri].at(ci) === undefined) {
+    if (ci < 0 || ci >= row.length) {
       throw new Error(`Column index ${ci} out of bounds`);
     }
-    this.data[ri][ci] = value;
+    row[ci] = value;
   }
 
   set_at(position: Point | Coords, value: T): void {
@@ -87,9 +92,9 @@ export class Grid<T> {
   }
 
   forEach(callback: (value: T, coords: Coords) => void): void {
-    for (let ri = 0; ri < this.height; ri++) {
-      for (let ci = 0; ci < this.width; ci++) {
-        callback(this.data[ri][ci], [ri, ci]);
+    for (const [ri, row] of this.data.entries()) {
+      for (const [ci, value] of row.entries()) {
+        callback(value, [ri, ci]);
       }
     }
   }
@@ -116,9 +121,9 @@ export class Grid<T> {
   *findIter(
     predicate: (value: T, coords: Coords) => boolean,
   ): IterableIterator<Coords> {
-    for (let ri = 0; ri < this.height; ri++) {
-      for (let ci = 0; ci < this.width; ci++) {
-        if (predicate(this.data[ri][ci], [ri, ci])) {
+    for (const [ri, row] of this.data.entries()) {
+      for (const [ci, value] of row.entries()) {
+        if (predicate(value, [ri, ci])) {
           yield [ri, ci];
         }
       }

@@ -11,7 +11,8 @@ function euclideanDistance(x: Coords, y: Coords): number {
 }
 
 function find(parent: number[], x: number): number {
-  return parent[x] === x ? x : (parent[x] = find(parent, parent[x]));
+  const p = parent[x] as number;
+  return p === x ? x : (parent[x] = find(parent, p));
 }
 
 function union(parent: number[], x: number, y: number): void {
@@ -23,7 +24,11 @@ function computePairs(points: Coords[]): [number, number, number][] {
   const pairs: [number, number, number][] = [];
   for (let i = 0; i < points.length; ++i) {
     for (let j = i + 1; j < points.length; ++j) {
-      pairs.push([i, j, euclideanDistance(points[i], points[j])]);
+      pairs.push([
+        i,
+        j,
+        euclideanDistance(points[i] as Coords, points[j] as Coords),
+      ]);
     }
   }
   pairs.sort((a, b) => a[2] - b[2]);
@@ -54,7 +59,8 @@ export function solve_a(input: string, size = 1000): number {
   // Build pairs and union by distance
   const pairs = computePairs(points);
   for (let i = 0; i < Math.min(size, pairs.length); ++i) {
-    union(parent, pairs[i][0], pairs[i][1]);
+    const [a, b] = pairs[i] as [number, number, number];
+    union(parent, a, b);
   }
 
   const count = componentSizes(parent, points);
@@ -82,5 +88,7 @@ export function solve_b(input: string): number {
   if (!lastPair) {
     throw new Error("No valid pair found");
   }
-  return points[lastPair[0]][0] * points[lastPair[1]][0];
+  return (
+    (points[lastPair[0]] as Coords)[0] * (points[lastPair[1]] as Coords)[0]
+  );
 }

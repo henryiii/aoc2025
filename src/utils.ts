@@ -1,5 +1,3 @@
-// Can try fs-extra later
-
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 

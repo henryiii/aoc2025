@@ -15,8 +15,8 @@ brew tap oven-sh/bun
 brew install bun
 ```
 
-I started with a minimal setup (see git history). I generated the
-`package.json` with `pnpm init`. I installed and added typescript and tsx with
+I started with a minimal setup (see git history). I generated the `package.json`
+with `pnpm init`. I installed and added typescript and tsx with
 `pnpm install --save-dev typescript tsx`. Eventually this moved to bun. You'll
 need to run:
 
@@ -28,8 +28,8 @@ For vscode, I did need to change the package manager in the "npm" section to
 "pnpm" (then "bun") from "auto".
 
 I also needed to run `pnpm add -D @types/node`, to teach typescript that it is
-targeting node; this fixed vscode's tooling to recognize `process` as an
-object.  Later I switched to `bun add -D @types/bun`. I added the tsconfig from
+targeting node; this fixed vscode's tooling to recognize `process` as an object.
+Later I switched to `bun add -D @types/bun`. I added the tsconfig from
 <https://bun.com/docs/typescript>.
 
 You can run a day with:
@@ -56,7 +56,6 @@ This helped me not have to look up things like how to write `log10`.
 To start up a REPL, type:
 
 ```console
-$ bun tsx
+$ bun repl
 > const { Grid } = await import("./src/grid.ts");
 ```
-

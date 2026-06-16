@@ -30,9 +30,9 @@ function merge_ranges(ranges: Range[]): Range[] {
 }
 
 function ranges_ingredients(input: string): [Range[], number[]] {
-  const [ranges_str, ingredients_str] = input.split("\n\n");
+  const [ranges_str, ingredients_str] = input.split("\n\n") as [string, string];
   const ranges = ranges_str.split("\n").map((line) => {
-    const [min, max] = line.split("-").map(Number);
+    const [min, max] = line.split("-").map(Number) as [number, number];
     return new Range(min, max);
   });
   const ingredients = ingredients_str.split("\n").map(Number);

@@ -17,11 +17,3 @@ declare module "javascript-lp-solver" {
   const _default: { Solve: typeof Solve };
   export default _default;
 }
-
-declare interface LPModel {
-  optimize: string;
-  opType: "min" | "max";
-  constraints: Record<string, { equal?: number; min?: number; max?: number }>;
-  variables: Record<string, Record<string, number>>;
-  ints: Record<string, 1>;
-}

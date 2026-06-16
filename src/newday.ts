@@ -1,15 +1,21 @@
-import { writeFileSync } from "fs";
+import { writeFileSync } from "node:fs";
 
 function generateDayTemplate(day: number): void {
   const padDay = String(day).padStart(2, "0");
 
   const srcTemplate = `\
 export function solve_a(input: string): number {
-    return input.split("\\n").map(Number).reduce((a, b) => a + b, 0);
+  return input
+    .split("\\n")
+    .map(Number)
+    .reduce((a, b) => a + b, 0);
 }
 
 export function solve_b(input: string): number {
-    return input.split("\\n").map(Number).reduce((a, b) => a * b, 1);
+  return input
+    .split("\\n")
+    .map(Number)
+    .reduce((a, b) => a * b, 1);
 }
 `;
 
@@ -23,12 +29,12 @@ const input = \`
 \`.trim();
 
 describe("day${padDay} examples", () => {
-    test("First example", () => {
-        expect(solve_a(input)).toBe(3);
-    });
-    test("Second example", () => {
-        expect(solve_b(input)).toBe(2);
-    });
+  test("First example", () => {
+    expect(solve_a(input)).toBe(3);
+  });
+  test("Second example", () => {
+    expect(solve_b(input)).toBe(2);
+  });
 });
 `;
 
@@ -46,5 +52,8 @@ describe("day${padDay} examples", () => {
   console.log(` - ${inputPath}`);
 }
 
-const day = parseInt(process.argv[2]);
-generateDayTemplate(day);
+const arg = process.argv[2];
+if (arg === undefined) {
+  throw new Error("Usage: bun newday <number>");
+}
+generateDayTemplate(parseInt(arg, 10));

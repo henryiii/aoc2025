@@ -1,4 +1,4 @@
-# Copilot Instructions for aoc2025
+# Agent for aoc2025
 
 ## Repository Overview
 

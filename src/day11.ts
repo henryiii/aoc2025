@@ -2,7 +2,7 @@ function parseGraph(input: string): Map<string, string[]> {
   const graph = new Map<string, string[]>();
   for (const line of input.trim().split("\n")) {
     if (!line.trim()) continue;
-    const [node, neighbors] = line.split(":");
+    const [node, neighbors] = line.split(":") as [string, string];
     graph.set(node.trim(), neighbors.trim().split(/\s+/));
   }
   return graph;

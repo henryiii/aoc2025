@@ -3,8 +3,8 @@
 ## Repository Overview
 
 This is an **Advent of Code 2025** solutions repository written in
-**TypeScript**. The codebase is small (~1200 lines total) and uses modern
-bun tooling with bun 1.3.5 as the package manager. Each day's puzzle has its own
+**TypeScript**. The codebase is small (~1200 lines total) and uses modern bun
+tooling with bun 1.3.5 as the package manager. Each day's puzzle has its own
 source file (`src/dayXX.ts`) with corresponding test file
 (`tests/dayXX.test.ts`).
 
@@ -46,11 +46,14 @@ bun test                 # Run all tests once
 # Lint code (must pass for CI)
 bun lint                 # Check for lint errors
 
+# Typecheck (must pass for CI)
+bun typecheck            # Run `tsc --noEmit`
+
 # Format code (recommended to run before committing)
 bun format               # Auto-format all files with Prettier
 
 # Start a TypeScript REPL for debugging
-bun tsx
+bun repl
 # Then in REPL: const { Grid } = await import("./src/grid.ts");
 ```
 
@@ -60,10 +63,11 @@ The GitHub Actions CI (`.github/workflows/test.yml`) runs on all PRs and main
 branch pushes:
 
 1. Checkout code
-2. Setup bun (using bun.sh/install)
-3. Setup Node.js v20 with bun cache
-4. Run `bun install`
-5. Run `bun test` (runs `bun` built-in test runner)
+2. Setup bun (`oven-sh/setup-bun`)
+3. Run `bun install`
+4. Run `bun lint`
+5. Run `bun typecheck`
+6. Run `bun test` (Bun's built-in test runner)
 
 ## Project Structure
 
@@ -71,16 +75,16 @@ branch pushes:
 aoc2025/
 ├── .github/
 │   └── workflows/
-│       └── test.yml          # CI workflow (pnpm install + test)
+│       └── test.yml          # CI workflow (bun lint + typecheck + test)
 ├── src/
-│   ├── dayXX.ts             # Solution files (day00-day10 exist)
+│   ├── dayXX.ts             # Solution files (day00-day12 exist)
 │   │                        # Each exports solve_a() and solve_b()
 │   ├── grid.ts              # Grid utility class with helpers
 │   ├── utils.ts             # readInput(), solver_a(), solver_b()
-│   ├── run.ts               # Entry point for pnpm day command
+│   ├── run.ts               # Entry point for the `bun day` command
 │   └── newday.ts            # Template generator for new days
 ├── tests/
-│   ├── dayXX.test.ts        # Vitest tests for each day
+│   ├── dayXX.test.ts        # bun:test tests for each day
 │   └── grid.test.ts         # Tests for Grid utility
 ├── inputs/
 │   ├── .gitignore           # Ignores *.txt except day00.txt
@@ -88,7 +92,7 @@ aoc2025/
 ├── package.json             # Scripts and dependencies
 ├── tsconfig.json            # TypeScript config (strict mode)
 ├── eslint.config.mjs        # ESLint flat config (strict + stylistic)
-├── .prettierignore          # Ignores pnpm-lock.yaml
+├── .prettierignore          # Prettier ignore list (currently empty)
 └── .gitignore              # Standard Node ignores (node_modules, etc.)
 ```
 
@@ -176,13 +180,13 @@ describe("dayXX examples", () => {
 3. Implement `solve_a()` and `solve_b()` in `src/dayN.ts` (e.g., day01.ts)
 4. Update tests in `tests/dayN.test.ts` with examples from puzzle
 5. Run `bun test` to verify
-6. Run `bun lint` and `bun format` before committing
+6. Run `bun lint`, `bun typecheck`, and `bun format` before committing
 
 ### Modifying Existing Code
 
 1. Make targeted changes to specific files
 2. Run `bun test` to ensure tests still pass
-3. Run `bun lint` to check for errors
+3. Run `bun lint` and `bun typecheck` to check for errors
 4. Run `bun format` to auto-format
 5. Verify with `bun day <N>` if changing solution logic
 

@@ -19,5 +19,11 @@ jobs:
       - name: Install with cache
         run: bun install
 
+      - name: Lint
+        run: bun lint
+
+      - name: Typecheck
+        run: bun typecheck
+
       - name: Test
         run: bun test

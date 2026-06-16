@@ -1,4 +1,4 @@
-import { Grid, Coords, toPoint } from "./grid.js";
+import { Grid, type Coords, toPoint } from "./grid.js";
 
 function splits(
   start: Coords,

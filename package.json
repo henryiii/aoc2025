@@ -4,10 +4,11 @@
   "description": "This is a solution repository for Advent of Code 2025.",
   "type": "module",
   "scripts": {
-    "day": "tsx src/run.ts",
-    "newday": "tsx src/newday.ts",
+    "day": "bun src/run.ts",
+    "newday": "bun src/newday.ts",
     "format": "prettier --write .",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
   },
   "author": "Henry Schreiner",
   "license": "MIT",
@@ -18,7 +19,6 @@
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.7.3",
-    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.48.1"
   },

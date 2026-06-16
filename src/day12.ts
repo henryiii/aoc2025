@@ -20,8 +20,9 @@ function parseInput(input: string): InputData {
   let i = 0;
 
   for (let p = 0; p < 6; ++p) {
-    if (!/^\d+:$/.test(lines[i]))
-      throw new Error(`Expected present header at line ${i}: ${lines[i]}`);
+    const header = lines[i];
+    if (header === undefined || !/^\d+:$/.test(header))
+      throw new Error(`Expected present header at line ${i}: ${header}`);
     presents.push(Grid.fromRows(lines.slice(++i, i + 3), (c) => c === "#"));
     i += 3;
   }
@@ -30,8 +31,11 @@ function parseInput(input: string): InputData {
     const m = line.match(/^(\d+)x(\d+):\s*((?:\d+\s*)+)$/);
     if (!m) throw new Error(`Invalid region format: ${line}`);
     return {
-      size: [parseInt(m[1], 10), parseInt(m[2], 10)] as [number, number],
-      counts: m[3].trim().split(/\s+/).map(Number),
+      size: [parseInt(m[1] as string, 10), parseInt(m[2] as string, 10)] as [
+        number,
+        number,
+      ],
+      counts: (m[3] as string).trim().split(/\s+/).map(Number),
     };
   });
 
@@ -48,7 +52,8 @@ function allPresentsFit(
   const totalPresents = presents.reduce(
     (sum, present, idx) =>
       sum +
-      present.reduce((isum, cur) => isum + (cur ? 1 : 0), 0) * counts[idx],
+      present.reduce((isum, cur) => isum + (cur ? 1 : 0), 0) *
+        (counts[idx] as number),
     0,
   );
   return h * w >= totalPresents;

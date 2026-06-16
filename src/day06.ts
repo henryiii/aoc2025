@@ -1,4 +1,4 @@
-import { Grid } from "./grid.ts";
+import { Grid } from "./grid.js";
 
 type Op = "+" | "*";
 

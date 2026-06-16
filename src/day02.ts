@@ -47,7 +47,7 @@ export function solve_b(input: string): number {
   return input
     .split(",")
     .flatMap((range) => {
-      const [start, end] = range.split("-").map(Number);
+      const [start, end] = range.split("-").map(Number) as Pair;
       return [...new Set(repeatedBlockGenerator(start, end))];
     })
     .reduce((sum, n) => sum + n, 0);

@@ -1,37 +1,36 @@
-export async function solveCoefficients(
+import lpSolver, { type LPModel } from "javascript-lp-solver";
+
+export function solveCoefficients(
   joltages: number[],
   buttons: number[][],
-): Promise<number> {
-  // Dynamically import javascript-lp-solver for ESM compatibility
-  const lpSolver =
-    (await import("javascript-lp-solver")).default ??
-    (await import("javascript-lp-solver"));
-  const n = joltages.length;
-  const m = buttons.length;
+): number {
+  const variables: Record<string, Record<string, number>> = {};
+  const ints: Record<string, 1> = {};
+  const constraints: Record<string, { equal?: number }> = {};
+  buttons.forEach((button, i) => {
+    const varName = `x${i}`;
+    const variable: Record<string, number> = { sum: 1 };
+    variables[varName] = variable;
+    ints[varName] = 1;
+    for (const j of button) {
+      variable[`j${j}`] = 1;
+    }
+  });
+  joltages.forEach((joltage, j) => {
+    constraints[`j${j}`] = { equal: joltage };
+  });
   const model: LPModel = {
     optimize: "sum",
     opType: "min",
-    constraints: {},
-    variables: {},
-    ints: {},
+    constraints,
+    variables,
+    ints,
   };
-  for (let i = 0; i < m; ++i) {
-    const varName = `x${i}`;
-    model.variables[varName] = { sum: 1 };
-    model.ints[varName] = 1;
-    for (const j of buttons[i]) {
-      model.variables[varName][`j${j}`] = 1;
-    }
-  }
-  for (let j = 0; j < n; ++j) {
-    model.constraints[`j${j}`] = { equal: joltages[j] };
-  }
   const result = lpSolver.Solve(model);
   if (!result.feasible) return -1;
   let sum = 0;
-  for (let i = 0; i < m; ++i) {
-    let v = result[`x${i}`];
-    if (typeof v === "undefined") v = 0;
+  for (let i = 0; i < buttons.length; ++i) {
+    const v = result[`x${i}`] ?? 0;
     if (typeof v !== "number" || v < 0 || Math.round(v) !== v) return -1;
     sum += v;
   }
@@ -80,7 +79,7 @@ class Machine {
       const state = new Array(this.target.length).fill(false);
       for (let i = 0; i < n; i++) {
         if ((mask & (1 << i)) !== 0) {
-          for (const idx of this.toggles[i]) {
+          for (const idx of this.toggles[i] ?? []) {
             state[idx] = !state[idx];
           }
         }
@@ -92,7 +91,7 @@ class Machine {
     return min === Infinity ? -1 : min;
   }
 
-  async minPressesJoltage(): Promise<number> {
+  minPressesJoltage(): number {
     return solveCoefficients(this.joltages, this.toggles);
   }
 }
@@ -102,12 +101,10 @@ export function solve_a(input: string): number {
   return machines.reduce((sum, machine) => sum + machine.minPresses(), 0);
 }
 
-export async function solve_b(input: string): Promise<number> {
+export function solve_b(input: string): number {
   const machines = input.split("\n").map((s) => Machine.fromString(s));
-  let sum = 0;
-  for (const machine of machines) {
-    // console.log(machine.joltages, machine.toggles);
-    sum += await machine.minPressesJoltage();
-  }
-  return sum;
+  return machines.reduce(
+    (sum, machine) => sum + machine.minPressesJoltage(),
+    0,
+  );
 }
